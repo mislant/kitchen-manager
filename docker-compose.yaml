@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  web:
+    container_name: web
+    build:
+      dockerfile: .docker/nginx/Dockerfile
+      context: ./
+      args:
+        NGINX_VERSION: ${NGINX_VERSION}
+  php-fpm:
+    container_name: php-fpm
+    build:
+      dockerfile: .docker/php-fpm/Dockerfile
+      context: ./
+      args:
+        PHP_VERSION: ${PHP_VERSION}

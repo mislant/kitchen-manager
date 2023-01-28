@@ -1,0 +1,27 @@
+services:
+  web:
+    build:
+      target: dev
+      args:
+        USER_NAME: ${USER}
+        USER_ID: ${USER_ID}
+        USER_GID: ${USER_GID}
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8080:80"
+  php-fpm:
+    build:
+      target: dev
+      args:
+        PHP_XDEBUG_CLIENT_PORT: ${PHP_XDEBUG_CLIENT_PORT}
+        PHP_XDEBUG_IDE_KEY: ${PHP_XDEBUG_IDE_KEY}
+        USER_NAME: ${USER}
+        USER_ID: ${USER_ID}
+        USER_GID: ${USER_GID}
+    environment:
+      PHP_IDE_CONFIG: ${PHP_XDEBUG_IDE_CONFIG}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./:/var/www/html

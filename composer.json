@@ -1,0 +1,37 @@
+{
+  "name": "mislant/kitchen-manager",
+  "description": "Application to manage your food stock and recipes",
+  "require": {
+    "php": ">=8.1",
+    "yiisoft/yii2": "^2.0",
+    "yiisoft/yii2-bootstrap5": "^2.0",
+    "vlucas/phpdotenv": "^5.5"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "codeception/codeception": "^5.0",
+    "codeception/module-asserts": "^3.0",
+    "codeception/module-yii2": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kitman\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kitman\\Tests\\": "tests/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
+    }
+  }
+}

@@ -1,0 +1,6 @@
+actor: WebTester
+bootstrap: bootstrap.php
+modules:
+  enabled:
+    - Yii2:
+        configFile: tests/Web/config.php

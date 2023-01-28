@@ -1,0 +1,15 @@
+services:
+  web:
+    build:
+      target: prod
+    ports:
+      - "80:80"
+    volumes:
+      - public:/var/www/html/app/web/public
+  php-fpm:
+    build:
+      target: prod
+    volumes:
+      - public:/var/www/html/app/web/public
+volumes:
+  public:
