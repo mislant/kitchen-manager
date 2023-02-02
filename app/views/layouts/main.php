@@ -49,14 +49,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         </ul>
     </div>
 </header>
-<main class="bg-light">
+<main class="bg-light" style="padding-bottom: 100px">
     <div class="container-sm">
         <?= Alert::widget(['delay' => 5000, 'options' => ['class' => 'fade show']]) ?>
 
         <?= $content ?>
     </div>
 </main>
-<footer class="py-3 my-4 border-top fixed-bottom">
+<footer class="bg-white py-3 border-top fixed-bottom">
     <div class="container-sm d-flex flex-wrap justify-content-end align-items-center">
             <span>
                 Powered by Yii
