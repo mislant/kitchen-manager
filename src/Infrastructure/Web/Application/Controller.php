@@ -9,7 +9,6 @@ use Kitman\Infrastructure\Web\Application\Core\Alert;
 abstract class Controller extends \yii\web\Controller
 {
     private Alert $alert;
-    private Services $services;
 
     protected function alert(): Alert
     {
