@@ -22,7 +22,7 @@ final class AddRecipeCommand
      */
     public function __invoke(AddRecipeRequest $request): void
     {
-        if ($this->repository->existsByName($request->name)) {
+        if ($this->repository->existsByTitle($request->name)) {
             throw new RecipeExists($request->name);
         }
 

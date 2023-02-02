@@ -1,10 +1,10 @@
 <?php
 /**
  * @var View $this
- * @var Recipe[] $recipes
+ * @var RecipeView[] $recipes
  */
 
-use Kitman\Application\Query\Recipe\Recipe;
+use Kitman\Application\Query\Recipe\RecipeView;
 use Kitman\Infrastructure\Web\Helper\Url;
 use yii\bootstrap5\Html;
 use yii\web\View;
@@ -19,7 +19,7 @@ use yii\web\View;
                  style="width: 390px; max-height: 300px">
                 <div class="col-8 d-flex flex-column">
                     <div class="d-flex pt-2 mb-2 border-1 border-bottom">
-                        <h5 class="text-primary" style="width: 90%"><?= $recipe->name ?></h5>
+                        <h5 class="text-primary" style="width: 90%"><?= $recipe->title ?></h5>
                         <div class="dropdown dropstart">
                             <a class="fs-5" type="button" id="recipeDropDown<?= $index ?>"
                                data-bs-toggle="dropdown" aria-expanded="false">

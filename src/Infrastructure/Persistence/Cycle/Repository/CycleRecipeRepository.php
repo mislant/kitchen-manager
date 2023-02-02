@@ -27,9 +27,9 @@ final class CycleRecipeRepository extends AbstractRepository implements RecipeRe
         }
     }
 
-    public function existsByName(string $name): bool
+    public function existsByTitle(string $title): bool
     {
-        $recipe = $this->repository->findOne(['name' => $name]);
+        $recipe = $this->repository->findOne(['title' => $title]);
         return !is_null($recipe);
     }
 }

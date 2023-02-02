@@ -28,4 +28,6 @@ call_user_func(static function () {
     if ($result !== 0) {
         die("Unable to migrate test database");
     }
+    // Set recreating entity map
+    Env::set("SCHEMA_CACHE_ENABLE", '0');
 });

@@ -10,10 +10,10 @@ final class CreateRecipeTable extends AbstractMigration
     {
         $recipe = $this->table('recipe');
         $recipe->addColumn('uuid', 'uuid', ['null' => false])
-            ->addColumn('name', 'string')
+            ->addColumn('title', 'string')
             ->addColumn('calories', 'float')
             ->addColumn('description', 'text')
-            ->addIndex(['uuid'], ['unique' => true])
+            ->addIndex(['uuid', 'title'], ['unique' => true])
             ->create();
     }
 }

@@ -6,6 +6,6 @@ namespace Kitman\Application\Query\Recipe;
 
 interface RecipeQuery
 {
-    /** @return Recipe[] */
+    /** @return RecipeView[] */
     public function allRecipes(): array;
 }

@@ -13,19 +13,19 @@ final class SqliteRecipeQuery implements RecipeQuery
     ) {
     }
 
-    /** @return Recipe[] */
+    /** @return RecipeView[] */
     public function allRecipes(): array
     {
         $recipes = $this->connection->query(
             <<<SQL
-            select uuid, name, calories, description from recipe
+            select uuid, title, calories, description from recipe
             SQL
         )->fetchAll();
 
         foreach ($recipes as &$recipe) {
-            $recipe = new Recipe(
+            $recipe = new RecipeView(
                 $recipe['uuid'],
-                $recipe['name'],
+                $recipe['title'],
                 $recipe['calories'],
                 $recipe['description']
             );

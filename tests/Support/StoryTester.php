@@ -60,7 +60,7 @@ class StoryTester extends \Codeception\Actor
         $this->assertEquals(
             ['Food', 200, 'Simple food'],
             [
-                $recipes[0]->name,
+                $recipes[0]->title,
                 $recipes[0]->calories,
                 $recipes[0]->description
             ]
@@ -72,7 +72,7 @@ class StoryTester extends \Codeception\Actor
     {
         $command = $this->need(AddRecipeCommand::class);
 
-        $name = uniqid("dish_", true);
+        $name = substr(uniqid("dish_", true), 0, 80);
         $this->remember("Dish", $name);
 
         $command(new AddRecipeRequest($name, 200.0, 'Simple food'));
