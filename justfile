@@ -15,6 +15,9 @@ init-env target="all" env="dev":
         sed -i "s/USER_GID=/&$(id -g $USER)/" .docker/.env
         echo "Set compose to work with dev overriding"
         sed -i "s/COMPOSE_FILE=/&docker-compose.yaml:docker-compose.dev.yaml/" .docker/.env
+      elif [ {{env}} == "prod" ]; then
+        echo "Set compose to work with prod overriding"
+        sed -i "s/COMPOSE_FILE=/&docker-compose.yaml:docker-compose.prod.yaml/" .docker/.env
       fi
     }
 
@@ -45,9 +48,11 @@ generate-cookie-validation-key:
     fi
     sed -i "s/COOKIE_VALIDATION_KEY=/&$(echo $RANDOM | md5sum | head -c 20)/" "$ENV"
 
-up: build
-    @docker compose --env-file=.docker/.env down
+up: down build
     @docker compose --env-file=.docker/.env up -d
+
+down:
+    @docker compose --env-file=.docker/.env down
 
 build:
     @docker compose --env-file=.docker/.env build

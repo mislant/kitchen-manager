@@ -5,73 +5,67 @@
  */
 
 use Kitman\Infrastructure\Web\Assets\AppAsset;
-use yii\bootstrap5\Breadcrumbs;
+use Kitman\Infrastructure\Web\Helper\Url;
+use Kitman\Infrastructure\Web\Widgets\Alert;
 use yii\bootstrap5\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
 
 AppAsset::register($this);
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
-$this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
-$this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
-$this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
+$this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
-<?php
-$this->beginPage() ?>
+<?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="h-100">
+<html lang="<?= Yii::$app->language ?>">
 <head>
     <title><?= Html::encode($this->title) ?></title>
-    <?php
-    $this->head() ?>
+    <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100">
-<?php
-$this->beginBody() ?>
-
-<header id="header">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-        ]
-    ]);
-    NavBar::end();
-    ?>
+<body class="bg-light">
+<?php $this->beginBody() ?>
+<header class="py-3 mb-4 border-bottom bg-white">
+    <div class="container-sm d-flex align-items-center flex-wrap">
+        <a href="/" class="d-flex fs-4 ms-2 me-auto text-dark text-decoration-none">
+            Kitman
+        </a>
+        <ul class="nav nav-pills">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                   aria-expanded="false">
+                    <?= "What to do?" ?>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <?= Html::a(
+                            "Add Recipe",
+                            Url::addRecipe(),
+                            ['class' => 'dropdown-item']
+                        ) ?>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </header>
+<main class="bg-light">
+    <div class="container-sm">
+        <?= Alert::widget(['delay' => 5000, 'options' => ['class' => 'fade show']]) ?>
 
-<main id="main" class="flex-shrink-0" role="main">
-    <div class="container">
-        <?php
-        if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php
-        endif ?>
         <?= $content ?>
     </div>
 </main>
-
-<footer id="footer" class="mt-auto py-3 bg-light">
-    <div class="container">
-        <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; Dogclub <?= date('Y') ?></div>
-            <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
-        </div>
+<footer class="py-3 my-4 border-top fixed-bottom">
+    <div class="container-sm d-flex flex-wrap justify-content-end align-items-center">
+            <span>
+                Powered by Yii
+                <img width="30px"
+                     src="https://www.yiiframework.com/image/design/logo/yii3_sign_black.svg">
+            </span>
     </div>
 </footer>
-
-<?php
-$this->endBody() ?>
+<?php $this->endBody() ?>
 </body>
 </html>
-<?php
-$this->endPage() ?>
+<?php $this->endPage() ?>

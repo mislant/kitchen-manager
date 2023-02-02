@@ -1,0 +1,15 @@
+actor: StoryTester
+bootstrap: bootstrap.php
+modules:
+  enabled:
+    - Asserts
+    - Kitman\Tests\Story\Utils\Memory
+    - Kitman\Tests\Story\Utils\Container\Container:
+        depends:
+          - Yii2
+    - Yii2:
+        configFile: tests/Story/config.php
+gherkin:
+  contexts:
+    default:
+      - Kitman\Tests\Support\StoryTester

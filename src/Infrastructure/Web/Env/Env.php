@@ -10,10 +10,15 @@ use Dotenv\Repository\RepositoryInterface;
 
 final class Env
 {
+    private static bool $isInit = false;
     private static RepositoryInterface $repository;
 
     public static function init(string ...$envs): void
     {
+        if (self::$isInit) {
+            return;
+        }
+
         $repository = RepositoryBuilder::createWithDefaultAdapters()
             ->make();
         self::$repository = $repository;
@@ -22,6 +27,7 @@ final class Env
         $dotenv->load();
 
         Rules::check($dotenv);
+        self::$isInit = true;
     }
 
     public static function get(string $key): mixed

@@ -18,7 +18,11 @@ final class Main
             'viewPath' => "@app/app/views",
             'runtimePath' => "@app/app/runtime",
             'controllerMap' => Controllers::get(),
-            'components' => Components::get()
+            'components' => Components::get(),
+            'container' => Container::get(),
+            'params' => [
+                'db' => Db::get($root)
+            ]
         ];
     }
 }
