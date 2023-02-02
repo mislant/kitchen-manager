@@ -14,6 +14,9 @@ final class Components
             'request' => [
                 'cookieValidationKey' => Env::get("COOKIE_VALIDATION_KEY"),
             ],
+            'errorHandler' => [
+                'errorAction' => 'site/error'
+            ],
             'urlManager' => [
                 'enablePrettyUrl' => true,
                 'showScriptName' => false,

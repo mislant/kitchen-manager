@@ -18,6 +18,7 @@ final class NewRecipeForm extends Model
         return [
             [['name', 'calories', 'description'], 'required'],
             [['name', 'description'], 'string'],
+            ['name', 'string', 'max' => 80],
             ['calories', 'number']
         ];
     }
