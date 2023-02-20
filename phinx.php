@@ -1,6 +1,6 @@
 <?php
 
-use Kitman\Infrastructure\Web\Env\Env;
+use Kitman\Web\Env\Env;
 
 Env::init(__DIR__);
 

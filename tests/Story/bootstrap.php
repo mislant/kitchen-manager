@@ -1,6 +1,6 @@
 <?php
 
-use Kitman\Infrastructure\Web\Env\Env;
+use Kitman\Web\Env\Env;
 use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;

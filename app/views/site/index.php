@@ -1,11 +1,11 @@
 <?php
 /**
  * @var View $this
- * @var RecipeView[] $recipes
+ * @var \Kitman\Application\Query\Recipe\Model\RecipePreview[] $recipes
  */
 
-use Kitman\Application\Query\Recipe\RecipeView;
-use Kitman\Infrastructure\Web\Helper\Url;
+use Kitman\Web\Helper\Img;
+use Kitman\Web\Helper\Url;
 use yii\bootstrap5\Html;
 use yii\web\View;
 
@@ -19,23 +19,18 @@ use yii\web\View;
                  style="width: 390px; max-height: 300px">
                 <div class="col-8 d-flex flex-column">
                     <div class="d-flex pt-2 mb-2 border-1 border-bottom">
-                        <h5 class="text-primary" style="width: 90%"><?= $recipe->title ?></h5>
-                        <div class="dropdown dropstart">
-                            <a class="fs-5" type="button" id="recipeDropDown<?= $index ?>"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-sliders"></i>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="recipeDropDown<?= $index ?>">
-                                <li><?= Html::a('Edit', Url::editRecipe($recipe->uuid), ['class' => 'dropdown-item']
-                                    ) ?></li>
-                            </ul>
-                        </div>
+                        <h5 class="text-primary" style="width: 90%"><?= $recipe->name ?></h5>
+                        <?= Html::a(
+                            Html::tag('i', options: ['class' => 'bi bi-eye']),
+                            Url::viewRecipe($recipe->uuid),
+                            ['class' => 'text-decoration-none']
+                        ) ?>
                     </div>
                     <p class="fs-6 fw-light">Calories: <?= $recipe->calories ?></p>
                     <p class="d-inline-block text-wrap" style=""><?= $recipe->description ?></p>
                 </div>
                 <div class="col-4 border-1 overflow-hidden">
-                    <img src="https://via.placeholder.com/300x200"
+                    <img src="<?= Img::placeholder() ?>"
                          class="p-1 w-100 h-100" alt="Dish Image"
                          style="object-fit: cover">
                 </div>

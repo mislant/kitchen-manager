@@ -1,7 +1,7 @@
 <?php
 
-use Kitman\Infrastructure\Web\Config\Main;
-use Kitman\Infrastructure\Web\Env\Env;
+use Kitman\Web\Config\Main;
+use Kitman\Web\Env\Env;
 use yii\web\Application;
 
 call_user_func(static function () {

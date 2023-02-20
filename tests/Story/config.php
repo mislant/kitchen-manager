@@ -1,6 +1,6 @@
 <?php
 
-use Kitman\Infrastructure\Web\Config\Main;
+use Kitman\Web\Config\Main;
 
 return call_user_func(static function (): array {
     $main = Main::get(codecept_root_dir());

@@ -4,9 +4,9 @@
  * @var string $content
  */
 
-use Kitman\Infrastructure\Web\Assets\AppAsset;
-use Kitman\Infrastructure\Web\Helper\Url;
-use Kitman\Infrastructure\Web\Widgets\Alert;
+use Kitman\Web\Assets\AppAsset;
+use Kitman\Web\Helper\Url;
+use Kitman\Web\Widgets\Alert;
 use yii\bootstrap5\Html;
 
 AppAsset::register($this);
@@ -50,7 +50,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     </div>
 </header>
 <main class="bg-light" style="padding-bottom: 100px">
-    <div class="container-sm">
+    <div id="main-container" class="container-sm">
         <?= Alert::widget(['delay' => 5000, 'options' => ['class' => 'fade show']]) ?>
 
         <?= $content ?>

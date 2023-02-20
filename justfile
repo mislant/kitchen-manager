@@ -49,7 +49,7 @@ generate-cookie-validation-key:
     sed -i "s/COOKIE_VALIDATION_KEY=/&$(echo $RANDOM | md5sum | head -c 20)/" "$ENV"
 
 migrate:
-    @php vendor/bin/phinx migrate
+    @php vendor/bin/phinx migrate -c ./phinx.php
 
 up: down build
     @docker compose --env-file=.docker/.env up -d

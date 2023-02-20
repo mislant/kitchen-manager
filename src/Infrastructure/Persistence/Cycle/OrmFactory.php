@@ -42,12 +42,15 @@ final class OrmFactory
     public function produce(): ORM
     {
         return new ORM(
-            new Factory(
+            (new Factory(
                 new DatabaseManager(
                     new DatabaseConfig(
                         $this->config
                     )
                 ),
+            ))->withCollectionFactory(
+                'domain',
+                new CollectionFactory(),
             ),
             $this->generateSchema()
         );

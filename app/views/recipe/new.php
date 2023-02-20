@@ -4,7 +4,7 @@
  * @var NewRecipeForm $form
  */
 
-use Kitman\Infrastructure\Web\Application\Recipe\New\NewRecipeForm;
+use Kitman\Web\Application\Recipe\NewRecipeForm;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\web\View;

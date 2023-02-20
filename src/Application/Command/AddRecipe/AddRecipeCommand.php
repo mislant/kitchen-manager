@@ -20,9 +20,9 @@ final class AddRecipeCommand
      * @throws RecipeExists
      * @throws PersistException
      */
-    public function __invoke(AddRecipeRequest $request): void
+    public function __invoke(AddRecipeRequest $request): string
     {
-        if ($this->repository->existsByTitle($request->name)) {
+        if ($this->repository->existsByName($request->name)) {
             throw new RecipeExists($request->name);
         }
 
@@ -33,5 +33,7 @@ final class AddRecipeCommand
         );
 
         $this->repository->persist($recipe);
+
+        return (string)$recipe->uuid();
     }
 }
