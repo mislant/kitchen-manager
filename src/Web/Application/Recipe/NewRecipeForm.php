@@ -10,11 +10,11 @@ use Kitman\Web\Application\Core\Model;
 final class NewRecipeForm extends Model
 {
     /** @var string */
-    public $name = '';
+    public $name;
     /** @var int */
     public $calories;
     /** @var string */
-    public string $description;
+    public $description;
 
     public function rules(): array
     {
@@ -30,7 +30,7 @@ final class NewRecipeForm extends Model
     {
         return new AddRecipeRequest(
             $this->name,
-            $this->calories,
+            (float)$this->calories,
             $this->description
         );
     }
