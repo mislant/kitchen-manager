@@ -13,7 +13,7 @@ use Kitman\Application\Command\AddIngredient\AddIngredientRequest;
 use Kitman\Application\Command\AddRecipe\AddRecipeCommand;
 use Kitman\Application\Command\AddRecipe\AddRecipeRequest;
 use Kitman\Application\Query\Recipe\RecipeQuery;
-use Kitman\Domain\Model\Recipe\RecipeExists;
+use Kitman\Tests\Story\Utils\Error;
 use Kitman\Tests\Story\Utils\Random\Random;
 
 /**
@@ -70,19 +70,25 @@ trait Steps
         }
     }
 
-    #[When('I add ingredient')]
-    public function addIngredient(): void
+    #[When('/^I add ingredient( \w+)?$/')]
+    public function addIngredient(string $name = ''): void
     {
         $command = $this->need(AddIngredientCommand::class);
-        $command(
-            new AddIngredientRequest(
-                $this->have($this->have("Dish")),
-                $name = Random::ingredient()->name(),
-                Random::ingredient()->amount(),
-                Random::ingredient()->type()->name
-            )
-        );
-        $this->remember("Ingredient", $name);
+        try {
+            $command(
+                new AddIngredientRequest(
+                    $this->have($this->have("Dish")),
+                    $name = empty($name)
+                        ? Random::ingredient()->name()
+                        : trim($name),
+                    Random::ingredient()->amount(),
+                    Random::ingredient()->type()->name
+                )
+            );
+            $this->remember("Ingredient", $name);
+        } catch (\Throwable $t) {
+            $this->remember("Result", $t);
+        }
     }
 
     #[Then('I see it in list')]
@@ -114,12 +120,16 @@ trait Steps
         );
     }
 
-    #[Then('I have error of same recipe')]
-    public function haveErrorOfSameRecipe(): void
+    #[Then('/I have error of ([\w ]+)/')]
+    public function haveErrorOf(string $error): void
     {
         $result = $this->have("Result");
 
         $this->assertIsObject($result);
-        $this->assertInstanceOf(RecipeExists::class, $result);
+        /** @noinspection UnnecessaryAssertionInspection */
+        $this->assertInstanceOf(
+            Error::from($error)->class(),
+            $result
+        );
     }
 }

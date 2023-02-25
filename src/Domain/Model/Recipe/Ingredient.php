@@ -33,6 +33,11 @@ class Ingredient implements ValueObject
         return $new;
     }
 
+    public function nameIs(string $name): bool
+    {
+        return $this->name === $name;
+    }
+
     public static function liquid(string $name, float $ml): self
     {
         return new self($name, $ml, IngredientType::liquid);

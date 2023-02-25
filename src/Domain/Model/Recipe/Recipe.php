@@ -61,10 +61,15 @@ class Recipe
 
     public function addIngredient(string $name, float $amount, IngredientType $type): void
     {
+        if ($this->ingredients->has($name)) {
+            throw new IngredientAlreadyAddedInRecipe($name);
+        }
+
         $ingredient = (new Ingredient($name, $amount, $type));
         if ($this->id !== null) {
             $ingredient = $ingredient->ofRecipe($this->id);
         }
+
         $this->ingredients[] = $ingredient;
     }
 

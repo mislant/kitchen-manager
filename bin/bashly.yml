@@ -1,0 +1,49 @@
+name: cli
+help: Cli interface to interact with kitchen manager application
+version: 'master'
+
+commands:
+  - name: env
+    help: "Environment variable configuration tool"
+    commands:
+      - name: init
+        help: "Initializes .env files"
+        flags:
+          - long: "--where"
+            short: "-w"
+            help: "Which place create .env file. Default 'all'
+              means initialize all .env files"
+            arg: place
+            default: "all"
+            allowed:
+              - "all"
+              - "root"
+              - "docker"
+          - long: "--env"
+            short: "-e"
+            help: "For what environment initialize default variables"
+            arg: env
+            default: "dev"
+            allowed:
+              - "dev"
+              - "prod"
+      - name: generate-cookie-validation-key
+        help: "Generates cookie validation key 
+        for frontend application. Result is placed in .env 
+        file in root directory"
+  - name: app
+    help: "Application management tool"
+    commands:
+      - name: start
+        help: "Starts application server"
+        flags:
+          - long: '--rebuild'
+            short: '-b'
+            help: "Rebuilds container images before start"
+          - long: '--show-config'
+            short: '-C'
+            help: "Shows docker-compose configuration of application"
+      - name: stop
+        help: "Stops application service"
+
+

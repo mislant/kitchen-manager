@@ -7,6 +7,7 @@ namespace Kitman\Tests\Unit\Domain\Model\Recipe;
 use Codeception\Test\Unit;
 use Kitman\Domain\Exception\InvalidArgumentException;
 use Kitman\Domain\Model\Recipe\Ingredient;
+use Kitman\Domain\Model\Recipe\IngredientAlreadyAddedInRecipe;
 use Kitman\Domain\Model\Recipe\IngredientType;
 use Kitman\Tests\Unit\Utils\RecipeBuilder;
 
@@ -40,5 +41,15 @@ final class RecipeTest extends Unit
         $this->assertEquals(Ingredient::liquid('Oil', 200), $ingredients[0]);
         $this->assertEquals(Ingredient::solid('Flour', 100), $ingredients[1]);
         $this->assertCount(2, $ingredients);
+    }
+
+    public function testCannotAddSameRecipe(): void
+    {
+        $recipe = RecipeBuilder::default()->build();
+
+        $this->expectException(IngredientAlreadyAddedInRecipe::class);
+
+        $recipe->addIngredient("Oil", 100, IngredientType::liquid);
+        $recipe->addIngredient("Oil", 100, IngredientType::liquid);
     }
 }

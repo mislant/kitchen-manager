@@ -17,4 +17,15 @@ final class IngredientTest extends ValueObjectTest
             [Ingredient::solid('Flour', 100), Ingredient::liquid('Oil', 200), false],
         ];
     }
+
+    public function testCheckNameIsSame(): void
+    {
+        $ingredient = Ingredient::solid("butter", 100);
+
+        $same = $ingredient->nameIs('butter');
+        $not = $ingredient->nameIs('oil');
+
+        $this->assertTrue($same);
+        $this->assertFalse($not);
+    }
 }
