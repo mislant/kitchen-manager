@@ -25,4 +25,29 @@ final class IngredientsTest extends Unit
         $this->assertTrue($hasSugar);
         $this->assertFalse($notOil);
     }
+
+    public function testGetsIngredientByName(): void
+    {
+        $ingredients = new Ingredients([
+            Ingredient::solid("sugar", 100),
+        ]);
+
+        $ingredient = $ingredients->get("sugar");
+
+        $this->assertEquals(
+            Ingredient::solid("sugar", 100),
+            $ingredient
+        );
+    }
+
+    public function testRemovesIngredientByName(): void
+    {
+        $ingredients = new Ingredients([
+            Ingredient::solid("sugar", 100),
+        ]);
+
+        $ingredients->remove("sugar");
+
+        $this->assertFalse($ingredients->has("sugar"));
+    }
 }

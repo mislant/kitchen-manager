@@ -16,11 +16,31 @@ final class Ingredients extends Collection
 
     public function has(string $name): bool
     {
-        return $this->collection->reduce(
-            static function (bool $has, Ingredient $ingredient) use ($name): bool {
-                return $has ?: $ingredient->nameIs($name);
-            },
-            false
-        );
+        foreach ($this->collection as $ingredient) {
+            if ($ingredient->nameIs($name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function get(string $name): ?Ingredient
+    {
+        foreach ($this->collection as $ingredient) {
+            if ($ingredient->nameIs($name)) {
+                return $ingredient;
+            }
+        }
+        return null;
+    }
+
+    public function remove(string $name): void
+    {
+        foreach ($this->collection as $index => $ingredient) {
+            if ($ingredient->nameIs($name)) {
+                unset($this[$index]);
+                return;
+            }
+        }
     }
 }

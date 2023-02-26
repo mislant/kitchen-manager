@@ -73,6 +73,21 @@ class Recipe
         $this->ingredients[] = $ingredient;
     }
 
+    /** @throws NoIngredientInRecipe */
+    public function removeIngredient(string $name): void
+    {
+        if (!$this->hasIngredient($name)) {
+            throw new NoIngredientInRecipe($name, $this->name);
+        }
+
+        $this->ingredients->remove($name);
+    }
+
+    public function hasIngredient(string $string): bool
+    {
+        return $this->ingredients->has($string);
+    }
+
     public function ingredients(): Ingredients
     {
         return $this->ingredients;

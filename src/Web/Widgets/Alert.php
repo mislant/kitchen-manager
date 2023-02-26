@@ -16,6 +16,7 @@ final class Alert extends Widget
         CoreAlert::ERROR => 'alert-danger',
     ];
 
+    public string $alertContainer = '';
     public array $closeButton = [];
     public int $delay = 0;
 
@@ -41,6 +42,8 @@ final class Alert extends Widget
 
             \Yii::$app->session->removeFlash($type);
         }
+
+        $this->registerAlertFunctions();
     }
 
     private function registerDelay(string $alertId): void
@@ -49,7 +52,7 @@ final class Alert extends Widget
             return;
         }
 
-        \Yii::$app->view->registerJs(
+        $this->view->registerJs(
             <<<JS
             setTimeout(function () {
                 var alert = document.getElementById("$alertId")
@@ -58,6 +61,48 @@ final class Alert extends Widget
             }, {$this->delay});
             JS,
             View::POS_LOAD
+        );
+    }
+
+    private function registerAlertFunctions(): void
+    {
+        if (empty($this->alertContainer)) {
+            return;
+        }
+
+        $this->view->registerJs(
+            <<<JS
+            const alert = (id, type, message) => {
+                let html = '<div id="' + id + '" class="' + type + ' fade show alert alert-dismissible" role="alert">'
+                    + message +
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                    '</div>';
+            
+                const template = document.createElement('template');
+                template.innerHTML = html.trim();
+                return template.content.firstChild;
+            }
+            
+            function showAlert(id, type, message) {
+                const alertTypes = ['alert-success', 'alert-warning', 'alert-danger'];
+            
+                if (!alertTypes.includes(type)) {
+                    return;
+                }
+            
+                let container = $('{$this->alertContainer}');
+                let delay = {$this->delay};
+                let div = alert(id, type, message)
+            
+                container.prepend(div)
+                if (delay > 0) {
+                    setTimeout(() => {
+                        let bsAlert = new bootstrap.Alert(div);
+                        bsAlert.close()
+                    }, delay)
+                }
+            }
+            JS
         );
     }
 }

@@ -29,7 +29,7 @@ final class RecipeTest extends Unit
             ->build();
     }
 
-    public function testAddingRecipe(): void
+    public function testAddingIngredient(): void
     {
         $recipe = RecipeBuilder::default()->build();
 
@@ -43,7 +43,7 @@ final class RecipeTest extends Unit
         $this->assertCount(2, $ingredients);
     }
 
-    public function testCannotAddSameRecipe(): void
+    public function testCannotAddSameIngredient(): void
     {
         $recipe = RecipeBuilder::default()->build();
 
@@ -51,5 +51,16 @@ final class RecipeTest extends Unit
 
         $recipe->addIngredient("Oil", 100, IngredientType::liquid);
         $recipe->addIngredient("Oil", 100, IngredientType::liquid);
+    }
+
+    public function testDeletingIngredient(): void
+    {
+        $recipe = RecipeBuilder::default()
+            ->ingredient()->name('milk')->add()
+            ->build();
+
+        $recipe->removeIngredient('milk');
+
+        $this->assertFalse($recipe->hasIngredient('milk'));
     }
 }

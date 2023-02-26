@@ -51,7 +51,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 </header>
 <main class="bg-light" style="padding-bottom: 100px">
     <div id="main-container" class="container-sm">
-        <?= Alert::widget(['delay' => 5000, 'options' => ['class' => 'fade show']]) ?>
+        <?= Alert::widget([
+            'delay' => 5000,
+            'alertContainer' => '#main-container',
+            'options' => ['class' => 'fade show']
+        ]) ?>
 
         <?= $content ?>
     </div>

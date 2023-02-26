@@ -12,6 +12,8 @@ use Kitman\Application\Command\AddIngredient\AddIngredientCommand;
 use Kitman\Application\Command\AddIngredient\AddIngredientRequest;
 use Kitman\Application\Command\AddRecipe\AddRecipeCommand;
 use Kitman\Application\Command\AddRecipe\AddRecipeRequest;
+use Kitman\Application\Command\DeleteIngredient\DeleteIngredientCommand;
+use Kitman\Application\Command\DeleteIngredient\DeleteIngredientRequest;
 use Kitman\Application\Query\Recipe\RecipeQuery;
 use Kitman\Tests\Story\Utils\Error;
 use Kitman\Tests\Story\Utils\Random\Random;
@@ -38,6 +40,20 @@ trait Steps
         $uuid = $command(new AddRecipeRequest($name, 200.0, 'Simple food'));
 
         $this->remember($name, $uuid);
+    }
+
+    #[Given('/Ingredient (\w+) in recipe/')]
+    public function ingredientInRecipe(string $name): void
+    {
+        $command = $this->need(AddIngredientCommand::class);
+        $command(
+            new AddIngredientRequest(
+                $this->have($this->have("Dish")),
+                $name,
+                Random::ingredient()->amount(),
+                Random::ingredient()->type()->name
+            )
+        );
     }
 
     #[When('I write new recipe')]
@@ -91,6 +107,18 @@ trait Steps
         }
     }
 
+    #[When("/I delete ingredient (\w+)/")]
+    public function deleteIngredient(string $name): void
+    {
+        $command = $this->need(DeleteIngredientCommand::class);
+        $command(
+            new DeleteIngredientRequest(
+                $this->have($this->have('Dish')),
+                $name
+            )
+        );
+    }
+
     #[Then('I see it in list')]
     public function checkRecipeAppeared(): void
     {
@@ -112,12 +140,30 @@ trait Steps
     public function checkIngredientAppear(): void
     {
         $recipe = $this->need(RecipeQuery::class)
-            ->detailedRecipe($this->have($this->have("Dish")));
+            ->detailedRecipe($this->have($this->have("Dish")))
+            ->get();
 
         $this->assertEquals(
             $this->have('Ingredient'),
-            $recipe->get()->ingredients[0]->name
+            $recipe->ingredients[0]->name
         );
+    }
+
+    #[Then('/I dont have (\w+) in recipe/')]
+    public function checkIngredientDisappear(string $name): void
+    {
+        $recipe = $this->need(RecipeQuery::class)
+            ->detailedRecipe($this->have($this->have("Dish")))
+            ->get();
+
+        $see = false;
+        foreach ($recipe->ingredients as $ingredient) {
+            if ($ingredient->name === $name) {
+                $see = true;
+                break;
+            }
+        }
+        $this->assertFalse($see);
     }
 
     #[Then('/I have error of ([\w ]+)/')]

@@ -6,12 +6,15 @@ namespace Kitman\Web\Application\Recipe;
 
 use Kitman\Application\Command\AddIngredient\AddIngredientCommand;
 use Kitman\Application\Command\AddRecipe\AddRecipeCommand;
+use Kitman\Application\Command\DeleteIngredient\DeleteIngredientCommand;
+use Kitman\Application\Command\DeleteIngredient\DeleteIngredientRequest;
 use Kitman\Application\Query\Recipe\RecipeQuery;
 use Kitman\Domain\Exception\DomainException;
 use Kitman\Web\Application\Controller;
 use Kitman\Web\Helper\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\ServerErrorHttpException;
 
 final class RecipeController extends Controller
 {
@@ -80,5 +83,31 @@ final class RecipeController extends Controller
 
 
         return $this->renderPartial("ingredients-list", compact('recipe'));
+    }
+
+    /** @throws ServerErrorHttpException */
+    public function actionDeleteIngredient(string $uuid, string $name): Response
+    {
+        if (!$this->request->isPost) {
+            throw new ServerErrorHttpException("Unexpected token");
+        }
+
+        try {
+            $command = \Yii::$container->get(DeleteIngredientCommand::class);
+            $command(
+                new DeleteIngredientRequest(
+                    $uuid,
+                    $name
+                )
+            );
+        } catch (DomainException $e) {
+            $result = false;
+            $message = $e->getMessage();
+        }
+
+        return $this->asJson([
+            'result' => $result ?? true,
+            'message' => $message ?? ''
+        ]);
     }
 }

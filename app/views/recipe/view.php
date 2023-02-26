@@ -57,6 +57,49 @@ $js = <<< JS
 
 const bsModal = document.getElementById('add-ingredient-modal');
 
+function updateIngredients(delay) {
+    async function fetch() {
+        let link = window.location.href + "/update-ingredients";
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: link, type: "GET", success: (html) => {
+                    resolve(html)
+                }, error: () => {
+                    reject()
+                }
+            })
+        })
+    }
+
+    let res = fetch();
+
+    const ingredients = $("#ingredients-list");
+
+    async function ingredientsFadeOut() {
+        return new Promise(resolve => {
+            ingredients.fadeOut(delay, resolve)
+        })
+    }
+
+    async function ingredientFadeIn() {
+        return new Promise(resolve => {
+            ingredients.fadeIn(delay, resolve)
+        })
+    }
+
+    ingredientsFadeOut().then(() => {
+        ingredients.html(spinner())
+        return ingredientFadeIn()
+    }).then(() => {
+        return res
+    }).then((html) => {
+        ingredientsFadeOut().then(() => {
+            ingredients.html(html)
+            return ingredientFadeIn()
+        })
+    });
+}
+
 $('#add-ingredient').on('click', function (event) {
     event.preventDefault()
 
@@ -115,63 +158,8 @@ $(document).on('beforeSubmit', '#add-ingredient-form', function (event) {
 
     function endAdding(result, message = "") {
         let modal = bootstrap.Modal.getInstance(bsModal);
-        modal.hide()
-
-        let showError = () => {
-            let alertDiv = alert('add-ingredient-error', message)
-            let container = $("#main-container");
-
-            container.prepend(alertDiv);
-            setTimeout(() => {
-                let bsAlert = new bootstrap.Alert(alertDiv);
-                bsAlert.close()
-            }, 5000)
-        }
-
-        let updateIngredients = () => {
-            async function fetch() {
-                let link = window.location.href + "/update-ingredients";
-                return new Promise((resolve, reject) => {
-                    $.ajax({
-                        url: link, type: "GET", success: (html) => {
-                            resolve(html)
-                        }, error: () => {
-                            reject()
-                        }
-                    })
-                })
-            }
-
-            let res = fetch();
-
-            const ingredients = $("#ingredients-list");
-
-            async function ingredientsFadeOut() {
-                return new Promise(resolve => {
-                    ingredients.fadeOut(delay, resolve)
-                })
-            }
-
-            async function ingredientFadeIn() {
-                return new Promise(resolve => {
-                    ingredients.fadeIn(delay, resolve)
-                })
-            }
-
-            ingredientsFadeOut().then(() => {
-                ingredients.html(spinner())
-                return ingredientFadeIn()
-            }).then(() => {
-                return res
-            }).then((html) => {
-                ingredientsFadeOut().then(() => {
-                    ingredients.html(html)
-                    return ingredientFadeIn()
-                })
-            });
-        }
-
-        result ? updateIngredients() : showError()
+        modal.hide();
+        result ? updateIngredients(delay): showAlert('add-ingredient-error', 'alert-danger', message);
     }
 
     function showForm(form) {
@@ -192,6 +180,35 @@ $(document).on('beforeSubmit', '#add-ingredient-form', function (event) {
 
     return false;
 });
+
+$(document).on('click', '.delete-ingredient-action', function (event) {
+    event.preventDefault();
+
+    async function fetch(link) {
+        return new Promise((resolve) => {
+            $.ajax({
+                url: link, type: 'POST', success: (response) => {
+                    resolve(response)
+                }, error: (error) => {
+                    console.log("Server error")
+                }
+            })
+        });
+    }
+
+    fetch($(this).attr('href')).then((response) => {
+        response.result
+            ? updateIngredients(1000)
+            : showAlert(
+                'delete-ingredient-error',
+                'alert-danger',
+                response.message
+            )
+    })
+    
+    return false;
+});
+
 
 JS;
 $this->registerJs($js);
